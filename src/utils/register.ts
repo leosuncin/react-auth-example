@@ -1,8 +1,9 @@
+import { AuthResp } from '../types/AuthResp';
 import { BadRequest } from '../types/BadRequest';
 import { Register } from '../types/Register';
 import { User } from '../types/User';
 
-export async function register(body: Register): Promise<User> {
+export async function register(body: Register): Promise<AuthResp> {
   const resp = await fetch(`${process.env.REACT_APP_API_URL}/auth/register`, {
     method: 'POST',
     body: JSON.stringify(body),
@@ -17,5 +18,8 @@ export async function register(body: Register): Promise<User> {
     throw new Error(error.message.join('\n'));
   }
 
-  return resp.json();
+  const [, token] = (resp.headers.get('authorization') ?? '').split(' ');
+  const user: User = await resp.json();
+
+  return { token, user };
 }

@@ -1,5 +1,5 @@
 export type RequestError = {
   statusCode: number;
-  message: string[];
+  message: string | string[];
   error: string;
 };

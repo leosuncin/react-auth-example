@@ -1,10 +1,10 @@
 import { AuthResp } from '../types/AuthResp';
-import { Register } from '../types/Register';
+import { Login } from '../types/Login';
 import { RequestError } from '../types/RequestError';
 import { User } from '../types/User';
 
-export async function register(body: Register): Promise<AuthResp> {
-  const resp = await fetch(`${process.env.REACT_APP_API_URL}/auth/register`, {
+export async function login(body: Login): Promise<AuthResp> {
+  const resp = await fetch(`${process.env.REACT_APP_API_URL}/auth/login`, {
     method: 'POST',
     body: JSON.stringify(body),
     headers: {
@@ -12,10 +12,12 @@ export async function register(body: Register): Promise<AuthResp> {
     },
   });
 
-  if (resp.status === 400) {
+  if (resp.status === 401) {
     const error: RequestError = await resp.json();
 
-    throw new Error((error.message as string[]).join('\n'));
+    throw new Error(
+      Array.isArray(error.message) ? error.message.join('\n') : error.message,
+    );
   }
 
   const [, token] = (resp.headers.get('authorization') ?? '').split(' ');

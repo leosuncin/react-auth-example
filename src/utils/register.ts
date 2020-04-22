@@ -1,6 +1,6 @@
 import { AuthResp } from '../types/AuthResp';
-import { BadRequest } from '../types/BadRequest';
 import { Register } from '../types/Register';
+import { RequestError } from '../types/RequestError';
 import { User } from '../types/User';
 
 export async function register(body: Register): Promise<AuthResp> {
@@ -13,7 +13,7 @@ export async function register(body: Register): Promise<AuthResp> {
   });
 
   if (resp.status === 400) {
-    const error: BadRequest = await resp.json();
+    const error: RequestError = await resp.json();
 
     throw new Error(error.message.join('\n'));
   }

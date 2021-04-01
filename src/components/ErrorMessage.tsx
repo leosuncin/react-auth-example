@@ -5,7 +5,6 @@ import {
   AlertTitle,
   CloseButton,
 } from '@chakra-ui/react';
-import { Fragment } from 'react';
 
 import { useAuth } from '../hooks/useAuth';
 
@@ -20,9 +19,7 @@ function ErrorMessage() {
         <CloseButton position="absolute" right="8px" top="8px" />
       </AlertDescription>
     </Alert>
-  ) : (
-    <Fragment />
-  );
+  ) : null;
 }
 
 export default ErrorMessage;

@@ -1,8 +1,9 @@
-import { Box, Button, Flex, Heading } from '@chakra-ui/core';
-import React, { useState } from 'react';
+import { Box, Button, Flex, Heading } from '@chakra-ui/react';
+import { useState } from 'react';
+
 import { useAuth } from '../hooks/useAuth';
 
-const Header: React.FC = props => {
+function Header() {
   const [show, setShow] = useState(false);
   const { authenticated, logout } = useAuth();
   const handleToggle = () => setShow(!show);
@@ -16,7 +17,6 @@ const Header: React.FC = props => {
       padding="1.5rem"
       bg="teal.500"
       color="white"
-      {...props}
     >
       <Flex align="center" mr={5}>
         <Heading as="h1" size="lg">
@@ -48,6 +48,6 @@ const Header: React.FC = props => {
       </Box>
     </Flex>
   );
-};
+}
 
 export default Header;

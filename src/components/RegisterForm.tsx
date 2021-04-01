@@ -4,12 +4,12 @@ import {
   FormControl,
   Input,
   Button,
-} from '@chakra-ui/core';
-import React from 'react';
+} from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
-import { Register } from '../types/Register';
 
-type RegisterFormProps = {
+import type { Register } from '../types/Register';
+
+export type RegisterFormProps = {
   onSubmit: (payload: Register) => Promise<void>;
 };
 
@@ -32,7 +32,7 @@ const validations = {
     },
   },
 };
-const RegisterForm: React.FC<RegisterFormProps> = props => {
+function RegisterForm(props: React.PropsWithChildren<RegisterFormProps>) {
   const { handleSubmit, errors, register, formState } = useForm<Register>();
 
   return (
@@ -64,7 +64,7 @@ const RegisterForm: React.FC<RegisterFormProps> = props => {
       </FormControl>
       <Button
         type="submit"
-        variantColor="teal"
+        colorScheme="teal"
         mt={4}
         isLoading={formState.isSubmitting}
       >
@@ -72,6 +72,6 @@ const RegisterForm: React.FC<RegisterFormProps> = props => {
       </Button>
     </form>
   );
-};
+}
 
 export default RegisterForm;

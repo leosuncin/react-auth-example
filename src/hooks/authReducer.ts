@@ -1,7 +1,7 @@
-import { AuthAction } from '../types/AuthAction';
-import { AuthState } from '../types/AuthState';
+import type { AuthAction } from '../types/AuthAction';
+import type { AuthState } from '../types/AuthState';
 import { AuthStorageEnum } from '../types/AuthStorageEnum';
-import { User } from '../types/User';
+import type { User } from '../types/User';
 
 export function authReducer(state: AuthState, action: AuthAction): AuthState {
   switch (action.type) {
@@ -27,6 +27,7 @@ export function authReducer(state: AuthState, action: AuthAction): AuthState {
       return state;
   }
 }
+
 export function initAuthState(): AuthState {
   try {
     const token = localStorage.getItem(AuthStorageEnum.token);

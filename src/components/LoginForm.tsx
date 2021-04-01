@@ -4,12 +4,12 @@ import {
   FormErrorMessage,
   FormLabel,
   Input,
-} from '@chakra-ui/core';
-import React from 'react';
+} from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
-import { Login } from '../types/Login';
 
-type LoginFormProps = {
+import type { Login } from '../types/Login';
+
+export type LoginFormProps = {
   onSubmit: (payload: Login) => Promise<void>;
 };
 
@@ -25,7 +25,8 @@ const validations = {
     },
   },
 };
-const LoginForm: React.FC<LoginFormProps> = props => {
+
+function LoginForm(props: React.PropsWithChildren<LoginFormProps>) {
   const { handleSubmit, errors, register, formState } = useForm<Login>();
 
   return (
@@ -50,7 +51,7 @@ const LoginForm: React.FC<LoginFormProps> = props => {
       </FormControl>
       <Button
         type="submit"
-        variantColor="teal"
+        colorScheme="teal"
         mt={4}
         isLoading={formState.isSubmitting}
       >
@@ -58,6 +59,6 @@ const LoginForm: React.FC<LoginFormProps> = props => {
       </Button>
     </form>
   );
-};
+}
 
 export default LoginForm;

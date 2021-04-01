@@ -1,5 +1,5 @@
-import { CSSReset, ThemeProvider, Box } from '@chakra-ui/core';
-import React from 'react';
+import { Box, ChakraProvider } from '@chakra-ui/react';
+
 import ErrorMessage from './components/ErrorMessage';
 import Header from './components/Header';
 import UserBox from './components/UserBox';
@@ -8,8 +8,7 @@ import { customTheme } from './theme';
 
 function App() {
   return (
-    <ThemeProvider theme={customTheme}>
-      <CSSReset />
+    <ChakraProvider theme={customTheme}>
       <AuthProvider>
         <Header />
         <ErrorMessage />
@@ -17,7 +16,7 @@ function App() {
           <UserBox />
         </Box>
       </AuthProvider>
-    </ThemeProvider>
+    </ChakraProvider>
   );
 }
 

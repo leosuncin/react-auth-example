@@ -1,11 +1,12 @@
-import { Avatar, Box, Flex, Text } from '@chakra-ui/core';
-import React from 'react';
+import { Avatar, Box, Flex, Text } from '@chakra-ui/react';
 import { MdAccountBox } from 'react-icons/md';
+
 import { useAuth } from '../hooks/useAuth';
 import TabForm from './TabForm';
 
-const UserBox: React.FC = () => {
+function UserBox() {
   const { authenticated, user } = useAuth();
+
   return authenticated ? (
     <Box
       maxWidth={400}
@@ -20,7 +21,8 @@ const UserBox: React.FC = () => {
         <Avatar
           size="lg"
           name={user?.name}
-          src={`https://api.adorable.io/avatars/64/${encodeURIComponent(
+          width="64"
+          src={`https://avatars.dicebear.com/api/bottts/${encodeURIComponent(
             user?.email as string,
           )}`}
         />
@@ -39,6 +41,6 @@ const UserBox: React.FC = () => {
   ) : (
     <TabForm />
   );
-};
+}
 
 export default UserBox;

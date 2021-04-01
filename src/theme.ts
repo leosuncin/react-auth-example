@@ -1,13 +1,7 @@
-import { DefaultTheme, theme, ColorHues } from '@chakra-ui/core';
+import { extendTheme } from '@chakra-ui/react';
 
-interface CustomTheme extends DefaultTheme {
-  colors: DefaultTheme['colors'] & { brand: ColorHues };
-}
-
-export const customTheme: CustomTheme = {
-  ...theme,
+export const customTheme = extendTheme({
   colors: {
-    ...theme.colors,
     // Go to https://smart-swatch.netlify.com/ to easily generate a new color
     // palette.
     brand: {
@@ -23,4 +17,4 @@ export const customTheme: CustomTheme = {
       900: '#000f1d',
     },
   },
-};
+});

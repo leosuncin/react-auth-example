@@ -1,10 +1,10 @@
-import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/core';
-import React from 'react';
+import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
+
 import { useAuth } from '../hooks/useAuth';
 import LoginForm from './LoginForm';
 import RegisterForm from './RegisterForm';
 
-const TabForm: React.FC = () => {
+function TabForm() {
   const { register, login } = useAuth();
 
   return (
@@ -24,6 +24,6 @@ const TabForm: React.FC = () => {
       </TabPanels>
     </Tabs>
   );
-};
+}
 
 export default TabForm;

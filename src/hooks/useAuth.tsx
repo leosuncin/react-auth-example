@@ -1,5 +1,6 @@
-import React, { createContext, useContext, useReducer } from 'react';
-import { AuthContext as AuthContextType } from '../types/AuthContext';
+import { createContext, useContext, useReducer } from 'react';
+
+import type { AuthContext as AuthContextType } from '../types/AuthContext';
 import { AuthStorageEnum } from '../types/AuthStorageEnum';
 import { login } from '../utils/login';
 import { register } from '../utils/register';
@@ -7,7 +8,7 @@ import { authReducer, initAuthState } from './authReducer';
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
-export const AuthProvider: React.FC = props => {
+export function AuthProvider(props: React.PropsWithChildren<{}>) {
   const [state, dispatch] = useReducer(
     authReducer,
     { authenticated: false },
@@ -53,7 +54,8 @@ export const AuthProvider: React.FC = props => {
   };
 
   return <AuthContext.Provider {...props} value={contextValue} />;
-};
+}
+
 export function useAuth() {
   const context = useContext(AuthContext);
 

@@ -1,7 +1,7 @@
-import { AuthResp } from '../types/AuthResp';
-import { Register } from '../types/Register';
-import { RequestError } from '../types/RequestError';
-import { User } from '../types/User';
+import type { AuthResp } from '../types/AuthResp';
+import type { Register } from '../types/Register';
+import type { RequestError } from '../types/RequestError';
+import type { User } from '../types/User';
 
 export async function register(body: Register): Promise<AuthResp> {
   const resp = await fetch(`${process.env.REACT_APP_API_URL}/auth/register`, {

@@ -4,11 +4,12 @@ import {
   AlertIcon,
   AlertTitle,
   CloseButton,
-} from '@chakra-ui/core';
-import React from 'react';
+} from '@chakra-ui/react';
+import { Fragment } from 'react';
+
 import { useAuth } from '../hooks/useAuth';
 
-const ErrorMessage: React.FC = () => {
+function ErrorMessage() {
   const { error } = useAuth();
 
   return error ? (
@@ -20,8 +21,8 @@ const ErrorMessage: React.FC = () => {
       </AlertDescription>
     </Alert>
   ) : (
-    <React.Fragment />
+    <Fragment />
   );
-};
+}
 
 export default ErrorMessage;

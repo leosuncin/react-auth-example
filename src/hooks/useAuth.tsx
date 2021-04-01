@@ -8,7 +8,9 @@ import { authReducer, initAuthState } from './authReducer';
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
-export function AuthProvider(props: React.PropsWithChildren<{}>) {
+export function AuthProvider(
+  props: React.PropsWithChildren<{ value?: AuthContextType }>,
+) {
   const [state, dispatch] = useReducer(
     authReducer,
     { authenticated: false },
@@ -53,7 +55,7 @@ export function AuthProvider(props: React.PropsWithChildren<{}>) {
     },
   };
 
-  return <AuthContext.Provider {...props} value={contextValue} />;
+  return <AuthContext.Provider value={contextValue} {...props} />;
 }
 
 export function useAuth() {

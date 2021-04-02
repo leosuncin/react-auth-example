@@ -1,0 +1,80 @@
+name: Continuos Integration
+
+on: [push, pull_request]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 🛎
+        uses: actions/checkout@v2
+      - name: Install dependencies 📦
+        uses: bahmutov/npm-install@v1
+      - name: Check types 🧩
+        uses: icrawl/action-tsc@v1
+      - name: Choose reporter for ReviewDog 🚦
+        uses: haya14busa/action-cond@v1
+        id: reporter
+        with:
+          cond: ${{ github.event_name == 'pull_request' }}
+          if_true: 'github-pr-review'
+          if_false: 'github-check'
+      - name: Run ESlint 🧹
+        uses: reviewdog/action-eslint@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          eslint_flags: --ext .js,.ts,.tsx .
+          reporter: ${{ steps.reporter.outputs.value }}
+
+  unit-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 🛎
+        uses: actions/checkout@v2
+      - name: Install dependencies 📦
+        uses: bahmutov/npm-install@v1
+      - name: Run unit tests 🧪
+        run: yarn test --coverage --json --testLocationInResults --outputFile=result.json
+        env:
+          REACT_APP_API_URL: ${{ secrets.REACT_APP_API_URL }}
+      - name: Report test results 📝
+        uses: tanmen/jest-reporter@v1
+        if: always()
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload code coverage ⬆️
+        uses: actions/upload-artifact@v2
+        with:
+          name: unit-coverage
+          path: coverage
+
+  e2e-test:
+    runs-on: ubuntu-16.04
+    steps:
+      - name: Checkout 🛎
+        uses: actions/checkout@v2
+      - name: Run Cypress tests 🌲
+        uses: cypress-io/github-action@v2
+        with:
+          start: yarn start
+          wait-on: http://localhost:3000
+          config: baseUrl=http://localhost:3000
+        env:
+          PORT: 3000
+          PUBLIC_URL: http://localhost:3000
+          NEXT_PUBLIC_API_ROOT: ${{ secrets.NEXT_PUBLIC_API_ROOT }}
+      - name: Upload screenshots and videos on failure ⬆️
+        uses: actions/upload-artifact@v2
+        if: failure()
+        with:
+          name: Cypress screenshots and videos
+          path: |
+            cypress/screenshots
+            cypress/videos
+      - name: Show code coverage 📊
+        run: npx nyc report
+      - name: Upload code coverage ⬆️
+        uses: actions/upload-artifact@v2
+        with:
+          name: e2e-coverage
+          path: coverage

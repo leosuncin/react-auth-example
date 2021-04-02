@@ -13,9 +13,13 @@ export type LoginFormProps = {
   onSubmit: (payload: Login) => Promise<void>;
 };
 
-const validations = {
+export const validations = {
   email: {
     required: 'Email is required',
+    pattern: {
+      message: 'Email is not a valid e-mail address',
+      value: /^[\w.!#$%&'*+\\/=?^`{|}~-]+@[a-zA-Z\d](?:[a-zA-Z\d-]{0,61}[a-zA-Z\d])?(?:\.[a-zA-Z\d](?:[a-zA-Z\d-]{0,61}[a-zA-Z\d])?)*$/,
+    },
   },
   password: {
     required: 'Password is required',
@@ -24,16 +28,21 @@ const validations = {
       message: 'Password is too short',
     },
   },
-};
+} as const;
 
 function LoginForm(props: React.PropsWithChildren<LoginFormProps>) {
   const { handleSubmit, errors, register, formState } = useForm<Login>();
 
   return (
-    <form onSubmit={handleSubmit(props.onSubmit)}>
+    <form onSubmit={handleSubmit((body) => props.onSubmit(body))}>
       <FormControl isInvalid={Boolean(errors.email)}>
         <FormLabel htmlFor="email">Email: </FormLabel>
-        <Input type="email" name="email" ref={register(validations.email)} />
+        <Input
+          type="email"
+          name="email"
+          id="email"
+          ref={register(validations.email)}
+        />
         {errors.email && (
           <FormErrorMessage>{errors.email.message}</FormErrorMessage>
         )}
@@ -43,6 +52,7 @@ function LoginForm(props: React.PropsWithChildren<LoginFormProps>) {
         <Input
           type="password"
           name="password"
+          id="password"
           ref={register(validations.password)}
         />
         {errors.password && (

@@ -13,7 +13,7 @@ export type RegisterFormProps = {
   onSubmit: (payload: Register) => Promise<void>;
 };
 
-const validations = {
+export const validations = {
   name: {
     required: 'Name is required',
     minLength: {
@@ -23,6 +23,10 @@ const validations = {
   },
   email: {
     required: 'Email is required',
+    pattern: {
+      message: 'Email is not a valid e-mail address',
+      value: /^[\w.!#$%&'*+\\/=?^`{|}~-]+@[a-zA-Z\d](?:[a-zA-Z\d-]{0,61}[a-zA-Z\d])?(?:\.[a-zA-Z\d](?:[a-zA-Z\d-]{0,61}[a-zA-Z\d])?)*$/,
+    },
   },
   password: {
     required: 'Password is required',
@@ -31,22 +35,33 @@ const validations = {
       message: 'Password is too short',
     },
   },
-};
+} as const;
+
 function RegisterForm(props: React.PropsWithChildren<RegisterFormProps>) {
   const { handleSubmit, errors, register, formState } = useForm<Register>();
 
   return (
-    <form onSubmit={handleSubmit(props.onSubmit)}>
+    <form onSubmit={handleSubmit((body) => props.onSubmit(body))}>
       <FormControl isInvalid={Boolean(errors.name)}>
         <FormLabel htmlFor="name">Name: </FormLabel>
-        <Input name="name" ref={register(validations.name)} />
+        <Input
+          type="text"
+          id="name"
+          name="name"
+          ref={register(validations.name)}
+        />
         {errors.name && (
           <FormErrorMessage>{errors.name.message}</FormErrorMessage>
         )}
       </FormControl>
       <FormControl isInvalid={Boolean(errors.email)}>
         <FormLabel htmlFor="email">Email: </FormLabel>
-        <Input type="email" name="email" ref={register(validations.email)} />
+        <Input
+          type="email"
+          id="email"
+          name="email"
+          ref={register(validations.email)}
+        />
         {errors.email && (
           <FormErrorMessage>{errors.email.message}</FormErrorMessage>
         )}
@@ -55,6 +70,7 @@ function RegisterForm(props: React.PropsWithChildren<RegisterFormProps>) {
         <FormLabel htmlFor="password">Password: </FormLabel>
         <Input
           type="password"
+          id="password"
           name="password"
           ref={register(validations.password)}
         />

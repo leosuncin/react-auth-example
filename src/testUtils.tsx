@@ -1,11 +1,12 @@
 import { ChakraProvider, theme } from '@chakra-ui/react';
-import { build, fake, perBuild } from '@jackfranklin/test-data-bot';
+import { build, fake, perBuild, sequence } from '@jackfranklin/test-data-bot';
 import { render, screen, waitFor } from '@testing-library/react';
 
 import { AuthProvider } from './hooks/useAuth';
 import type { AuthContext } from './types/AuthContext';
 import type { Login } from './types/Login';
 import type { Register } from './types/Register';
+import type { User } from './types/User';
 
 function wrapWithProviders(context: AuthContext = {} as AuthContext) {
   return ({ children }: React.PropsWithChildren<{}>) => (
@@ -51,4 +52,21 @@ const registerBuild = build<Register>({
   },
 });
 
-export { customRender as render, screen, waitFor, loginBuild, registerBuild };
+const userBuild = build<User>({
+  fields: {
+    id: sequence(),
+    name: fake((f) => f.name.findName()),
+    email: fake((f) => f.internet.exampleEmail()),
+    createdAt: fake((f) => f.date.past().toISOString()),
+    updatedAt: perBuild(() => new Date().toISOString()),
+  },
+});
+
+export {
+  loginBuild,
+  registerBuild,
+  customRender as render,
+  screen,
+  userBuild,
+  waitFor,
+};

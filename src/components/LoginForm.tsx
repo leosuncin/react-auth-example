@@ -31,37 +31,37 @@ export const validations = {
 } as const;
 
 function LoginForm(props: React.PropsWithChildren<LoginFormProps>) {
-  const { handleSubmit, errors, register, formState } = useForm<Login>();
+  const { handleSubmit, register, formState } = useForm<Login>();
 
   return (
     <form
       data-testid="login"
       onSubmit={handleSubmit((body) => props.onSubmit(body))}
     >
-      <FormControl isInvalid={Boolean(errors.email)}>
+      <FormControl isInvalid={Boolean(formState.errors.email)}>
         <FormLabel htmlFor="login-email">Email: </FormLabel>
         <Input
           type="email"
-          name="email"
           id="login-email"
           autoComplete="email"
-          ref={register(validations.email)}
+          {...register('email', validations.email)}
         />
-        {errors.email && (
-          <FormErrorMessage>{errors.email.message}</FormErrorMessage>
+        {formState.errors.email && (
+          <FormErrorMessage>{formState.errors.email.message}</FormErrorMessage>
         )}
       </FormControl>
-      <FormControl isInvalid={Boolean(errors.password)}>
+      <FormControl isInvalid={Boolean(formState.errors.password)}>
         <FormLabel htmlFor="login-password">Password: </FormLabel>
         <Input
           type="password"
-          name="password"
           id="login-password"
           autoComplete="current-password"
-          ref={register(validations.password)}
+          {...register('password', validations.password)}
         />
-        {errors.password && (
-          <FormErrorMessage>{errors.password.message}</FormErrorMessage>
+        {formState.errors.password && (
+          <FormErrorMessage>
+            {formState.errors.password.message}
+          </FormErrorMessage>
         )}
       </FormControl>
       <Button

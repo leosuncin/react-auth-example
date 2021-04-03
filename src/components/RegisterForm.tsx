@@ -38,50 +38,49 @@ export const validations = {
 } as const;
 
 function RegisterForm(props: React.PropsWithChildren<RegisterFormProps>) {
-  const { handleSubmit, errors, register, formState } = useForm<Register>();
+  const { handleSubmit, register, formState } = useForm<Register>();
 
   return (
     <form
       data-testid="register"
       onSubmit={handleSubmit((body) => props.onSubmit(body))}
     >
-      <FormControl isInvalid={Boolean(errors.name)}>
+      <FormControl isInvalid={Boolean(formState.errors.name)}>
         <FormLabel htmlFor="register-name">Name: </FormLabel>
         <Input
           type="text"
           id="register-name"
-          name="name"
           autoComplete="name"
-          ref={register(validations.name)}
+          {...register('name', validations.name)}
         />
-        {errors.name && (
-          <FormErrorMessage>{errors.name.message}</FormErrorMessage>
+        {formState.errors.name && (
+          <FormErrorMessage>{formState.errors.name.message}</FormErrorMessage>
         )}
       </FormControl>
-      <FormControl isInvalid={Boolean(errors.email)}>
+      <FormControl isInvalid={Boolean(formState.errors.email)}>
         <FormLabel htmlFor="register-email">Email: </FormLabel>
         <Input
           type="email"
           id="register-email"
-          name="email"
           autoComplete="email"
-          ref={register(validations.email)}
+          {...register('email', validations.email)}
         />
-        {errors.email && (
-          <FormErrorMessage>{errors.email.message}</FormErrorMessage>
+        {formState.errors.email && (
+          <FormErrorMessage>{formState.errors.email.message}</FormErrorMessage>
         )}
       </FormControl>
-      <FormControl isInvalid={Boolean(errors.password)}>
+      <FormControl isInvalid={Boolean(formState.errors.password)}>
         <FormLabel htmlFor="register-password">Password: </FormLabel>
         <Input
           type="password"
           id="register-password"
-          name="password"
           autoComplete="new-password"
-          ref={register(validations.password)}
+          {...register('password', validations.password)}
         />
-        {errors.password && (
-          <FormErrorMessage>{errors.password.message}</FormErrorMessage>
+        {formState.errors.password && (
+          <FormErrorMessage>
+            {formState.errors.password.message}
+          </FormErrorMessage>
         )}
       </FormControl>
       <Button

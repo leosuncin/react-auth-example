@@ -12,7 +12,7 @@ export async function login(body: Login): Promise<AuthResp> {
     },
   });
 
-  if (resp.status === 401) {
+  if (resp.status >= 400) {
     const error: RequestError = await resp.json();
 
     throw new Error(

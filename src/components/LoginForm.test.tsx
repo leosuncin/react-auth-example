@@ -17,9 +17,7 @@ test('submit login form', async () => {
   userEvent.type(screen.getByLabelText(/Password/i), data.password);
   userEvent.click(screen.getByRole('button', { name: 'Login' }));
 
-  await waitFor(() =>
-    expect(screen.getByRole('button', { name: 'Login' })).not.toBeDisabled(),
-  );
+  await waitFor(() => expect(screen.getByRole('button')).not.toBeDisabled());
 
   expect(handleSubmitSpy).toHaveBeenCalledWith(data);
 });

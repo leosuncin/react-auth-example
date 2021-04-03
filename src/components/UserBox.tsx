@@ -21,10 +21,7 @@ function UserBox() {
         <Avatar
           size="lg"
           name={user?.name}
-          width="64"
-          src={`https://avatars.dicebear.com/api/bottts/${encodeURIComponent(
-            user?.email as string,
-          )}`}
+          src={`https://avatars.dicebear.com/api/bottts/${user?.email!}.svg`}
         />
         <Box ml={4} as={MdAccountBox} color="orange.400" />
         <Text

@@ -1,0 +1,12 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: "/"
+    schedule:
+      interval: weekly
+      day: sunday
+    versioning-strategy: widen
+    labels:
+      - dependencies
+      # Add default Kodiak `merge.automerge_label`
+      - automerge

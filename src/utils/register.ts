@@ -12,10 +12,12 @@ export async function register(body: Register): Promise<AuthResp> {
     },
   });
 
-  if (resp.status === 400) {
+  if (resp.status >= 400) {
     const error: RequestError = await resp.json();
 
-    throw new Error((error.message as string[]).join('\n'));
+    throw new Error(
+      Array.isArray(error.message) ? error.message.join('\n') : error.message,
+    );
   }
 
   const [, token] = (resp.headers.get('authorization') ?? '').split(' ');

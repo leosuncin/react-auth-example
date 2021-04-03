@@ -41,13 +41,17 @@ function RegisterForm(props: React.PropsWithChildren<RegisterFormProps>) {
   const { handleSubmit, errors, register, formState } = useForm<Register>();
 
   return (
-    <form onSubmit={handleSubmit((body) => props.onSubmit(body))}>
+    <form
+      data-testid="register"
+      onSubmit={handleSubmit((body) => props.onSubmit(body))}
+    >
       <FormControl isInvalid={Boolean(errors.name)}>
-        <FormLabel htmlFor="name">Name: </FormLabel>
+        <FormLabel htmlFor="register-name">Name: </FormLabel>
         <Input
           type="text"
-          id="name"
+          id="register-name"
           name="name"
+          autoComplete="name"
           ref={register(validations.name)}
         />
         {errors.name && (
@@ -55,11 +59,12 @@ function RegisterForm(props: React.PropsWithChildren<RegisterFormProps>) {
         )}
       </FormControl>
       <FormControl isInvalid={Boolean(errors.email)}>
-        <FormLabel htmlFor="email">Email: </FormLabel>
+        <FormLabel htmlFor="register-email">Email: </FormLabel>
         <Input
           type="email"
-          id="email"
+          id="register-email"
           name="email"
+          autoComplete="email"
           ref={register(validations.email)}
         />
         {errors.email && (
@@ -67,11 +72,12 @@ function RegisterForm(props: React.PropsWithChildren<RegisterFormProps>) {
         )}
       </FormControl>
       <FormControl isInvalid={Boolean(errors.password)}>
-        <FormLabel htmlFor="password">Password: </FormLabel>
+        <FormLabel htmlFor="register-password">Password: </FormLabel>
         <Input
           type="password"
-          id="password"
+          id="register-password"
           name="password"
+          autoComplete="new-password"
           ref={register(validations.password)}
         />
         {errors.password && (

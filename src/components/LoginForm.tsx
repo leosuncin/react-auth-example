@@ -34,13 +34,17 @@ function LoginForm(props: React.PropsWithChildren<LoginFormProps>) {
   const { handleSubmit, errors, register, formState } = useForm<Login>();
 
   return (
-    <form onSubmit={handleSubmit((body) => props.onSubmit(body))}>
+    <form
+      data-testid="login"
+      onSubmit={handleSubmit((body) => props.onSubmit(body))}
+    >
       <FormControl isInvalid={Boolean(errors.email)}>
-        <FormLabel htmlFor="email">Email: </FormLabel>
+        <FormLabel htmlFor="login-email">Email: </FormLabel>
         <Input
           type="email"
           name="email"
-          id="email"
+          id="login-email"
+          autoComplete="email"
           ref={register(validations.email)}
         />
         {errors.email && (
@@ -48,11 +52,12 @@ function LoginForm(props: React.PropsWithChildren<LoginFormProps>) {
         )}
       </FormControl>
       <FormControl isInvalid={Boolean(errors.password)}>
-        <FormLabel htmlFor="password">Password: </FormLabel>
+        <FormLabel htmlFor="login-password">Password: </FormLabel>
         <Input
           type="password"
           name="password"
-          id="password"
+          id="login-password"
+          autoComplete="current-password"
           ref={register(validations.password)}
         />
         {errors.password && (

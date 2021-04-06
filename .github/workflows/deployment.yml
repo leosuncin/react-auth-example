@@ -30,7 +30,7 @@ jobs:
         uses: actions/upload-artifact@v2
         if: failure()
         with:
-          name: Cypress screenshots and videos 💾
+          name: screenshots+videos
           path: |
             cypress/screenshots
             cypress/videos

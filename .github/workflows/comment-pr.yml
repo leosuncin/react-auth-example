@@ -7,6 +7,8 @@ on:
     workflows: ['Continuos Integration']
     types:
       - completed
+env:
+  ACTIONS_STEP_DEBUG: true
 
 jobs:
   test-result:
@@ -15,6 +17,7 @@ jobs:
       ${{ github.event.workflow_run.event == 'pull_request' &&
       github.event.workflow_run.conclusion == 'success' }}
     steps:
+      - uses: hmarr/debug-action@v2
       - name: Download result-file
         uses: actions/github-script@v3.1.0
         with:
@@ -40,6 +43,13 @@ jobs:
         uses: tanmen/jest-reporter@v1
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
+
+  report-coverage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: hmarr/debug-action@v2
+      - run: echo ${{ github.event.workflow_run.id }}
+
   debug:
     runs-on: ubuntu-latest
     steps:

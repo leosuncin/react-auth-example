@@ -4,7 +4,7 @@ import { validations } from '../../src/components/RegisterForm';
 describe('Register form', () => {
   beforeEach(() => {
     cy.intercept('POST', '**/auth/register', (request) => {
-      if (Cypress.env('env')?.toLowerCase() === 'preview') {
+      if (Cypress.env('env') === 'Preview') {
         return request.reply();
       }
 

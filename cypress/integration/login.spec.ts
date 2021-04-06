@@ -4,7 +4,7 @@ import { validations } from '../../src/components/LoginForm';
 describe('Login form', () => {
   beforeEach(() => {
     cy.intercept('POST', '**/auth/login', (request) => {
-      if (Cypress.env('env')?.toLowerCase() === 'preview') {
+      if (Cypress.env('env') === 'Preview') {
         return request.reply();
       }
 

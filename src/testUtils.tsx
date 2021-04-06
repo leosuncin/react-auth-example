@@ -42,7 +42,7 @@ export const loginBuild = build<Login>({
 export const registerBuild = build<Register>({
   fields: {
     name: fake((f) => f.name.findName()),
-    email: fake((f) => f.internet.email()),
+    email: fake((f) => f.internet.exampleEmail()),
     password: fake((f) => f.internet.password(12)),
   },
   traits: {

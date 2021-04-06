@@ -4,6 +4,10 @@ import { validations } from '../../src/components/RegisterForm';
 describe('Register form', () => {
   beforeEach(() => {
     cy.intercept('POST', '**/auth/register', (request) => {
+      if (Cypress.env('env')?.toLowerCase() === 'preview') {
+        return request.reply();
+      }
+
       const { name, email } = request.body;
       const user = userBuild({ overrides: { name, email } });
       const token = JSON.stringify(user);

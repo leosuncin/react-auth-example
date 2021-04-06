@@ -36,7 +36,7 @@ jobs:
       - name: Run unit tests 🧪
         run: yarn test --coverage --json --testLocationInResults --outputFile=result.json
         env:
-          REACT_APP_API_URL: ${{ secrets.REACT_APP_API_URL }}
+          REACT_APP_API_URL: https://nest-auth-example.herokuapp.com
       - name: Report test results 📝
         uses: tanmen/jest-reporter@v1
         if: always()
@@ -49,7 +49,7 @@ jobs:
           path: coverage
 
   e2e-test:
-    runs-on: ubuntu-16.04
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout 🛎
         uses: actions/checkout@v2
@@ -62,7 +62,7 @@ jobs:
         env:
           PORT: 3000
           PUBLIC_URL: http://localhost:3000
-          NEXT_PUBLIC_API_ROOT: ${{ secrets.NEXT_PUBLIC_API_ROOT }}
+          REACT_APP_API_URL: https://nest-auth-example.herokuapp.com
       - name: Upload screenshots and videos on failure ⬆️
         uses: actions/upload-artifact@v2
         if: failure()

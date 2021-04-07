@@ -11,31 +11,16 @@ on:
 jobs:
   test-result:
     runs-on: ubuntu-latest
-    if: >
-      ${{ github.event.workflow_run.event == 'pull_request' &&
-      github.event.workflow_run.conclusion == 'success' }}
+    if: github.event.workflow_run.event == 'pull_request' && github.event.workflow_run.conclusion == 'success'
     steps:
       - name: Download result-file
-        uses: actions/github-script@v3.1.0
+        uses: dawidd6/action-download-artifact@v2
         with:
-          script: |
-            const fs = require('fs');
-            const artifacts = await github.actions.listWorkflowRunArtifacts({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                run_id: ${{ github.event.workflow_run.id }},
-            });
-            const matchArtifact = artifacts.data.artifacts.filter((artifact) => {
-              return artifact.name == "result-file"
-            })[0];
-            const download = await github.actions.downloadArtifact({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                artifact_id: matchArtifact.id,
-                archive_format: 'zip',
-            });
-            fs.writeFileSync('${{ github.workspace }}/result-file.zip', Buffer.from(download.data));
-      - run: unzip result-file.zip
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          workflow: ci.yml
+          run_id: ${{ github.event.workflow_run.id }}
+          name: result-file
+      - run: ls -A
       - name: Report test results 📝
         uses: tanmen/jest-reporter@v1
         with:
@@ -53,3 +38,10 @@ jobs:
         env:
           GITHUB_CONTEXT: ${{ toJSON(github) }}
         run: echo "$GITHUB_CONTEXT"
+      - name: Download result-file
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          workflow: ci.yml
+          run_id: ${{ github.event.workflow_run.id }}
+      - run: ls -RA

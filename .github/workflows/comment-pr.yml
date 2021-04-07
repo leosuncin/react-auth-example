@@ -45,6 +45,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: hmarr/debug-action@v2
+      - name: Print github workflow_run
+        env:
+          GITHUB_CONTEXT: ${{ toJSON(github.event.workflow_run) }}
+        run: echo "$GITHUB_CONTEXT"
       - name: Print github context
         env:
           GITHUB_CONTEXT: ${{ toJSON(github) }}

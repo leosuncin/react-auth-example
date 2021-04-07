@@ -1,4 +1,4 @@
-import { queries, render, screen, waitFor } from '@testing-library/react';
+import { queries, render, screen, waitForElementToBeRemoved } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { setupServer } from 'msw/node';
 
@@ -52,9 +52,7 @@ test('register a new user', async () => {
   );
   userEvent.click(queries.getByRole(screen.getByTestId('register'), 'button'));
 
-  await waitFor(() =>
-    expect(screen.queryByTestId('register')).not.toBeInTheDocument(),
-  );
+  await waitForElementToBeRemoved(screen.queryByTestId('register'));
 
   expect(screen.getByRole('img', { name: data.name })).toBeInTheDocument();
   expect(screen.getByText(data.name)).toBeInTheDocument();
@@ -101,9 +99,7 @@ test('login with a user', async () => {
   );
   userEvent.click(queries.getByRole(screen.getByTestId('login'), 'button'));
 
-  await waitFor(() =>
-    expect(screen.queryByTestId('login')).not.toBeInTheDocument(),
-  );
+  await waitForElementToBeRemoved(screen.queryByTestId('login'));
 
   expect(screen.getByRole('img')).toBeInTheDocument();
 });
@@ -142,10 +138,6 @@ test('log out', async () => {
   expect(screen.getByText(user.name)).toBeInTheDocument();
 
   userEvent.click(screen.getByText('Log out'));
-
-  await waitFor(() =>
-    expect(screen.queryByText('Log out')).not.toBeInTheDocument(),
-  );
 
   expect(localStorage.getItem(AuthStorageEnum.user)).toBeNull();
   expect(localStorage.getItem(AuthStorageEnum.token)).toBeNull();

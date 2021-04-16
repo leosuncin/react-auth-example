@@ -42,13 +42,11 @@ jobs:
           REACT_APP_API_URL: https://nest-auth-example.herokuapp.com
       - name: Report test results 📝
         uses: tanmen/jest-reporter@v1
-        if: >
-          ${{ github.event.workflow_run.event != 'pull_request' &&
-          steps.branch-name.outputs.current_branch != 'master' }}
+        if: github.event_name != 'pull_request' && steps.branch-name.outputs.current_branch != 'master'
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Save test results 💾
-        if: github.event.workflow_run.event == 'pull_request'
+        if: github.event_name == 'pull_request'
         uses: actions/upload-artifact@v2
         with:
           name: result-file

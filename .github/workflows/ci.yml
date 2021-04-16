@@ -40,6 +40,7 @@ jobs:
         run: yarn test --coverage --json --testLocationInResults --outputFile=result.json
         env:
           REACT_APP_API_URL: https://nest-auth-example.herokuapp.com
+      - uses: hmarr/debug-action@v2
       - name: Report test results 📝
         uses: tanmen/jest-reporter@v1
         if: >

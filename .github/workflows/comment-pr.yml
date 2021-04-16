@@ -30,18 +30,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: hmarr/debug-action@v2
-      - name: Print github workflow_run
-        env:
-          GITHUB_CONTEXT: ${{ toJSON(github.event.workflow_run) }}
-        run: echo "$GITHUB_CONTEXT"
-      - name: Print github context
-        env:
-          GITHUB_CONTEXT: ${{ toJSON(github) }}
-        run: echo "$GITHUB_CONTEXT"
       - name: Download result-file
         uses: dawidd6/action-download-artifact@v2
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           workflow: ci.yml
           run_id: ${{ github.event.workflow_run.id }}
-      - run: ls -RA
+      - run: |
+          ls -RA
+          mkdir -p reports .nyc_output
+          cp e2e-coverage/coverage-final.json reports/coverage-e2e.json
+          cp unit-coverage/coverage-final.json reports/coverage-unit.json
+          npx nyc merge reports
+          mv coverage.json .nyc_output/out.json
+          npx nyc report --reporter json --report-dir coverage
+          npx nyc report --skip-empty --reporter text-summary

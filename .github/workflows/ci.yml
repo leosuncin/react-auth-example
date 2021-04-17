@@ -31,9 +31,6 @@ jobs:
     steps:
       - name: Checkout 🛎
         uses: actions/checkout@v2
-      - name: Get branch names 🌳
-        id: branch-name
-        uses: tj-actions/branch-names@v2.2
       - name: Install dependencies 📦
         uses: bahmutov/npm-install@v1
       - name: Run unit tests 🧪
@@ -42,11 +39,11 @@ jobs:
           REACT_APP_API_URL: https://nest-auth-example.herokuapp.com
       - name: Report test results 📝
         uses: tanmen/jest-reporter@v1
-        if: github.event_name != 'pull_request' && steps.branch-name.outputs.current_branch != 'master'
+        if: env.GITHUB_ACTOR == env.GITHUB_REPOSITORY_OWNER
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Save test results 💾
-        if: github.event_name == 'pull_request'
+        if: env.GITHUB_ACTOR != env.GITHUB_REPOSITORY_OWNER
         uses: actions/upload-artifact@v2
         with:
           name: result-file

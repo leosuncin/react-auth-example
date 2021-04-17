@@ -37,19 +37,6 @@ jobs:
         run: yarn test --coverage --json --testLocationInResults --outputFile=result.json
         env:
           REACT_APP_API_URL: https://nest-auth-example.herokuapp.com
-      - name: Report test results 📝
-        uses: tanmen/jest-reporter@v1
-        if: ${{ env.GITHUB_ACTOR == env.GITHUB_REPOSITORY_OWNER }}
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-      - uses: hmarr/debug-action@v2
-        if: failure()
-      - name: Save test results 💾
-        if: ${{ env.GITHUB_ACTOR != env.GITHUB_REPOSITORY_OWNER }}
-        uses: actions/upload-artifact@v2
-        with:
-          name: result-file
-          path: result.json
       - name: Upload code coverage ⬆️
         uses: actions/upload-artifact@v2
         with:

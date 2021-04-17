@@ -1,7 +1,7 @@
 version: 2
 updates:
   - package-ecosystem: npm
-    directory: "/"
+    directory: '/'
     schedule:
       interval: weekly
       day: sunday
@@ -9,4 +9,12 @@ updates:
     labels:
       - dependencies
       # Add default Kodiak `merge.automerge_label`
+      - automerge
+
+  - package-ecosystem: 'github-actions'
+    directory: '/'
+    schedule:
+      interval: 'monthly'
+    labels:
+      - dependencies
       - automerge

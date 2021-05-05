@@ -1,5 +1,6 @@
 import { ChakraProvider, theme } from '@chakra-ui/react';
-import { build, fake, perBuild, sequence } from '@jackfranklin/test-data-bot';
+import { build, fake, perBuild } from '@jackfranklin/test-data-bot';
+import { factory, primaryKey } from '@mswjs/data';
 import { render } from '@testing-library/react';
 import { rest } from 'msw';
 
@@ -56,23 +57,22 @@ export const registerBuild = build<Register>({
   },
 });
 
-export const userBuild = build<User>({
-  fields: {
-    id: sequence(),
-    name: fake((f) => f.name.findName()),
-    email: fake((f) => f.internet.exampleEmail()),
-    createdAt: fake((f) => f.date.past().toISOString()),
-    updatedAt: perBuild(() => new Date().toISOString()),
+export const db = factory({
+  user: {
+    id: primaryKey(() => Math.round(Math.random() + Date.now()).toString()),
+    name: String,
+    email: String,
+    createdAt: () => new Date().toISOString(),
+    updatedAt: () => new Date().toISOString(),
   },
 });
+db.user.create({ id: '1', name: 'John Doe', email: 'john@doe.me' });
 
 export const registerHandler = rest.post<Register, User>(
   `${process.env.REACT_APP_API_URL}/auth/register`,
   (request, response, context) => {
     const { email, name } = request.body;
-    const user = userBuild({
-      overrides: { name, email },
-    });
+    const user = db.user.create({ email, name });
     const token = Buffer.from(JSON.stringify(user)).toString('base64');
 
     if (email === 'john@doe.me')
@@ -90,7 +90,7 @@ export const registerHandler = rest.post<Register, User>(
       context.status(201),
       context.set('Authorization', `Bearer ${token}`),
       context.cookie('token', token, { httpOnly: true, sameSite: 'strict' }),
-      context.json(user),
+      context.json({ ...user, id: Number(user.id) }),
     );
   },
 );
@@ -99,10 +99,10 @@ export const loginHandler = rest.post<Login, User>(
   `${process.env.REACT_APP_API_URL}/auth/login`,
   (request, response, context) => {
     const { email } = request.body;
-    const user = userBuild({ overrides: { email } });
+    const user = db.user.findFirst({ where: { email: { equals: email } } });
     const token = Buffer.from(JSON.stringify(user)).toString('base64');
 
-    if (email !== 'john@doe.me')
+    if (!user)
       return response(
         context.status(401),
         context.json({
@@ -117,7 +117,7 @@ export const loginHandler = rest.post<Login, User>(
       context.status(200),
       context.set('Authorization', `Bearer ${token}`),
       context.cookie('token', token, { httpOnly: true, sameSite: 'strict' }),
-      context.json(user),
+      context.json({ ...user, id: Number(user.id) }),
     );
   },
 );

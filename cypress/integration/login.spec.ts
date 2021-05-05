@@ -1,4 +1,4 @@
-import { loginBuild } from '../../src/testUtils';
+import { loginBuild, db } from '../../src/testUtils';
 import { validations } from '../../src/components/LoginForm';
 
 describe('Login form', () => {
@@ -9,17 +9,15 @@ describe('Login form', () => {
       }
 
       const { email } = request.body;
-      const user = {
-        id: 1,
-        name: 'John Doe',
-        email: 'john@doe.me',
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-      };
+      const user = db.user.findFirst({ where: { email: { equals: email } } });
       const token = JSON.stringify(user);
 
-      if (email === 'john@doe.me') {
-        request.reply(200, user, { authorization: `Bearer ${token}` });
+      if (user) {
+        request.reply(
+          200,
+          { ...user, id: Number(user.id) },
+          { authorization: `Bearer ${token}` },
+        );
       } else {
         request.reply(401, {
           error: 'Unauthorized',

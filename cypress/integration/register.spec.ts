@@ -1,4 +1,4 @@
-import { registerBuild, userBuild } from '../../src/testUtils';
+import { registerBuild, db } from '../../src/testUtils';
 import { validations } from '../../src/components/RegisterForm';
 
 describe('Register form', () => {
@@ -9,7 +9,7 @@ describe('Register form', () => {
       }
 
       const { name, email } = request.body;
-      const user = userBuild({ overrides: { name, email } });
+      const user = db.user.create({ name, email });
       const token = JSON.stringify(user);
 
       if (email === 'john@doe.me') {
@@ -19,7 +19,11 @@ describe('Register form', () => {
           statusCode: 422,
         });
       } else {
-        request.reply(201, user, { authorization: `Bearer ${token}` });
+        request.reply(
+          201,
+          { ...user, id: Number(user.id) },
+          { authorization: `Bearer ${token}` },
+        );
       }
     }).as('register');
     cy.visit('/');

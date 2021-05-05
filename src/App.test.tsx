@@ -1,4 +1,9 @@
-import { queries, render, screen, waitForElementToBeRemoved } from '@testing-library/react';
+import {
+  queries,
+  render,
+  screen,
+  waitForElementToBeRemoved,
+} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { setupServer } from 'msw/node';
 
@@ -8,7 +13,7 @@ import {
   loginHandler,
   registerBuild,
   registerHandler,
-  userBuild,
+  db,
 } from './testUtils';
 import { AuthStorageEnum } from './types/AuthStorageEnum';
 
@@ -89,6 +94,11 @@ test('login with a user', async () => {
 
   userEvent.click(screen.getByRole('tab', { name: 'Login' }));
 
+  expect(screen.getByRole('tab', { name: 'Login' })).toHaveAttribute(
+    'aria-selected',
+    'true',
+  );
+
   userEvent.type(
     queries.getByLabelText(screen.getByTestId('login'), /Email/i),
     data.email,
@@ -127,7 +137,10 @@ test('show login error message', async () => {
 });
 
 test('log out', async () => {
-  const user = userBuild();
+  const user = db.user.create({
+    name: 'Kelly Obrien',
+    email: 'kelly.obrien@example.com',
+  });
   const token = btoa(JSON.stringify(user));
 
   localStorage.setItem(AuthStorageEnum.user, JSON.stringify(user));

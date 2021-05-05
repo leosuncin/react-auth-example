@@ -1,15 +1,18 @@
 import userEvent from '@testing-library/user-event';
 
-import { render, screen, userBuild } from '../testUtils';
+import { render, screen, db } from '../testUtils';
 import type { AuthContext } from '../types/AuthContext';
 import UserBox from './UserBox';
 
 test('show user details when is authenticated', () => {
-  const user = userBuild();
+  const user = db.user.create({
+    name: 'Paul Griffin',
+    email: 'paul.griffin@example.com',
+  });
   const token = Buffer.from(JSON.stringify(user)).toString('base64');
   const contextMocked: jest.Mocked<AuthContext> = {
     authenticated: true,
-    user,
+    user: { ...user, id: Number(user?.id) },
     token,
     login: jest.fn(),
     register: jest.fn(),

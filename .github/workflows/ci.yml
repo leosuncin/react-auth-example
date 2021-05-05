@@ -34,7 +34,7 @@ jobs:
       - name: Install dependencies 📦
         uses: bahmutov/npm-install@v1
       - name: Run unit tests 🧪
-        run: yarn test --coverage --json --testLocationInResults --outputFile=result.json
+        run: yarn test --coverage --runInBand
         env:
           REACT_APP_API_URL: https://nest-auth-example.herokuapp.com
       - name: Upload code coverage ⬆️

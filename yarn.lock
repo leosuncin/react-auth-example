@@ -2297,9 +2297,9 @@
     set-cookie-parser "^2.4.6"
 
 "@mswjs/data@^0.4.0":
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/@mswjs/data/-/data-0.4.0.tgz#2b7f1a334f80069ac94d408d0879c25265100336"
-  integrity sha512-Fzfza3TPcqMcjy3EewdsUDTmNeRWOtfEjzgswPPjv9ygQS3QOVEzgOe1qL4M2SkFMUPfv2+bjVHjpemZ7SSYUg==
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/@mswjs/data/-/data-0.4.1.tgz#7f36463a4edf212cd6b55c8e2bb0922bdf8a204b"
+  integrity sha512-wL/g/qVdkLGwh7Ve46ayKGByjmUVUq36T9WacB6sZpQlnU53T11H6twqxzCUg38vDfR3wXWWMY+hxmqH4+iZsQ==
   dependencies:
     "@types/md5" "^2.3.0"
     "@types/pluralize" "^0.0.29"

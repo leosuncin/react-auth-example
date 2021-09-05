@@ -141,7 +141,7 @@ test('log out', async () => {
     name: 'Kelly Obrien',
     email: 'kelly.obrien@example.com',
   });
-  const token = Buffer.from(JSON.stringify(user)).toString('base64url');
+  const token = Buffer.from(JSON.stringify(user)).toString('base64');
 
   localStorage.setItem(AuthStorageEnum.user, JSON.stringify(user));
   localStorage.setItem(AuthStorageEnum.token, token);

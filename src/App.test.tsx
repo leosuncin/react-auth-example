@@ -1,8 +1,8 @@
 import {
-  queries,
   render,
   screen,
   waitForElementToBeRemoved,
+  within,
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { setupServer } from 'msw/node';
@@ -44,18 +44,18 @@ test('register a new user', async () => {
   render(<App />);
 
   userEvent.type(
-    queries.getByLabelText(screen.getByTestId('register'), /Name/i),
+    within(screen.getByTestId('register')).getByLabelText(/Name/i),
     data.name,
   );
   userEvent.type(
-    queries.getByLabelText(screen.getByTestId('register'), /Email/i),
+    within(screen.getByTestId('register')).getByLabelText(/Email/i),
     data.email,
   );
   userEvent.type(
-    queries.getByLabelText(screen.getByTestId('register'), /Password/i),
+    within(screen.getByTestId('register')).getByLabelText(/Password/i),
     data.password,
   );
-  userEvent.click(queries.getByRole(screen.getByTestId('register'), 'button'));
+  userEvent.click(within(screen.getByTestId('register')).getByRole('button'));
 
   await waitForElementToBeRemoved(screen.queryByTestId('register'));
 
@@ -69,18 +69,18 @@ test('show register error message', async () => {
   render(<App />);
 
   userEvent.type(
-    queries.getByLabelText(screen.getByTestId('register'), /Name/i),
+    within(screen.getByTestId('register')).getByLabelText(/Name/i),
     data.name,
   );
   userEvent.type(
-    queries.getByLabelText(screen.getByTestId('register'), /Email/i),
+    within(screen.getByTestId('register')).getByLabelText(/Email/i),
     data.email,
   );
   userEvent.type(
-    queries.getByLabelText(screen.getByTestId('register'), /Password/i),
+    within(screen.getByTestId('register')).getByLabelText(/Password/i),
     data.password,
   );
-  userEvent.click(queries.getByRole(screen.getByTestId('register'), 'button'));
+  userEvent.click(within(screen.getByTestId('register')).getByRole('button'));
 
   await expect(
     screen.findByText('The email «john@doe.me» is already register.'),
@@ -100,14 +100,14 @@ test('login with a user', async () => {
   );
 
   userEvent.type(
-    queries.getByLabelText(screen.getByTestId('login'), /Email/i),
+    within(screen.getByTestId('login')).getByLabelText(/Email/i),
     data.email,
   );
   userEvent.type(
-    queries.getByLabelText(screen.getByTestId('login'), /Password/i),
+    within(screen.getByTestId('login')).getByLabelText(/Password/i),
     data.password,
   );
-  userEvent.click(queries.getByRole(screen.getByTestId('login'), 'button'));
+  userEvent.click(within(screen.getByTestId('login')).getByRole('button'));
 
   await waitForElementToBeRemoved(screen.queryByTestId('login'));
 
@@ -122,14 +122,14 @@ test('show login error message', async () => {
   userEvent.click(screen.getByRole('tab', { name: 'Login' }));
 
   userEvent.type(
-    queries.getByLabelText(screen.getByTestId('login'), /Email/i),
+    within(screen.getByTestId('login')).getByLabelText(/Email/i),
     data.email,
   );
   userEvent.type(
-    queries.getByLabelText(screen.getByTestId('login'), /Password/i),
+    within(screen.getByTestId('login')).getByLabelText(/Password/i),
     data.password,
   );
-  userEvent.click(queries.getByRole(screen.getByTestId('login'), 'button'));
+  userEvent.click(within(screen.getByTestId('login')).getByRole('button'));
 
   await expect(
     screen.findByText(`There isn't any user with email: ${data.email}`),
@@ -141,7 +141,7 @@ test('log out', async () => {
     name: 'Kelly Obrien',
     email: 'kelly.obrien@example.com',
   });
-  const token = btoa(JSON.stringify(user));
+  const token = Buffer.from(JSON.stringify(user)).toString('base64url');
 
   localStorage.setItem(AuthStorageEnum.user, JSON.stringify(user));
   localStorage.setItem(AuthStorageEnum.token, token);

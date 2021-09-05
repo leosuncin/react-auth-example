@@ -9,12 +9,12 @@ import { authReducer, initAuthState } from './authReducer';
 const AuthContext = createContext<AuthContextType | null>(null);
 
 export function AuthProvider(
-  props: React.PropsWithChildren<{ value?: AuthContextType }>,
+  props: React.PropsWithChildren<{ value?: AuthContextType }>
 ) {
   const [state, dispatch] = useReducer(
     authReducer,
     { authenticated: false },
-    initAuthState,
+    initAuthState
   );
   const contextValue: AuthContextType = {
     ...state,
@@ -24,11 +24,11 @@ export function AuthProvider(
         localStorage.setItem(AuthStorageEnum.token, payload.token);
         localStorage.setItem(
           AuthStorageEnum.user,
-          JSON.stringify(payload.user),
+          JSON.stringify(payload.user)
         );
         dispatch({ type: 'register', payload });
       } catch (error) {
-        dispatch({ type: 'error', payload: error });
+        if (error instanceof Error) dispatch({ type: 'error', payload: error });
       }
     },
     async login(body) {
@@ -37,11 +37,11 @@ export function AuthProvider(
         localStorage.setItem(AuthStorageEnum.token, payload.token);
         localStorage.setItem(
           AuthStorageEnum.user,
-          JSON.stringify(payload.user),
+          JSON.stringify(payload.user)
         );
         dispatch({ type: 'login', payload });
       } catch (error) {
-        dispatch({ type: 'error', payload: error });
+        if (error instanceof Error) dispatch({ type: 'error', payload: error });
       }
     },
     logout() {
@@ -50,7 +50,7 @@ export function AuthProvider(
         localStorage.removeItem(AuthStorageEnum.user);
         dispatch({ type: 'logout' });
       } catch (error) {
-        dispatch({ type: 'error', payload: error });
+        if (error instanceof Error) dispatch({ type: 'error', payload: error });
       }
     },
   };

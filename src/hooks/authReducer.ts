@@ -32,12 +32,15 @@ export function initAuthState(): AuthState {
   try {
     const token = localStorage.getItem(AuthStorageEnum.token);
     const user: User = JSON.parse(
-      localStorage.getItem(AuthStorageEnum.user) || '{}',
+      localStorage.getItem(AuthStorageEnum.user) || '{}'
     );
     const authenticated = Boolean(token) && Boolean(user);
 
     return { authenticated, token, user };
   } catch (error) {
-    return { authenticated: false, error: error.message };
+    return {
+      authenticated: false,
+      error: error instanceof Error ? error.message : String(error),
+    };
   }
 }

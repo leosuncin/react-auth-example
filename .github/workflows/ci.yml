@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout 🛎
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Install dependencies 📦
         uses: bahmutov/npm-install@v1
       - name: Check types 🧩
@@ -30,7 +30,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout 🛎
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Install dependencies 📦
         uses: bahmutov/npm-install@v1
       - name: Run unit tests 🧪
@@ -47,7 +47,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout 🛎
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Run Cypress tests 🌲
         uses: cypress-io/github-action@v2
         with:

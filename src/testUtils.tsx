@@ -68,7 +68,7 @@ export const db = factory({
 });
 db.user.create({ id: '1', name: 'John Doe', email: 'john@doe.me' });
 
-export const registerHandler = rest.post<Register, User>(
+export const registerHandler = rest.post<Register, never, User>(
   `${process.env.REACT_APP_API_URL}/auth/register`,
   (request, response, context) => {
     const { email, name } = request.body;
@@ -95,7 +95,7 @@ export const registerHandler = rest.post<Register, User>(
   },
 );
 
-export const loginHandler = rest.post<Login, User>(
+export const loginHandler = rest.post<Login, never, User>(
   `${process.env.REACT_APP_API_URL}/auth/login`,
   (request, response, context) => {
     const { email } = request.body;

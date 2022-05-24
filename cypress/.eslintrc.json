@@ -1,3 +1,8 @@
 {
-  "extends": ["plugin:cypress/recommended"]
+  "extends": ["plugin:cypress/recommended"],
+  "settings": {
+    "testing-library/utils-module": "off",
+    "testing-library/custom-renders": "off",
+    "testing-library/custom-queries": "off"
+  }
 }

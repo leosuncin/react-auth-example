@@ -1,4 +1,4 @@
-import { db } from '../../src/testUtils';
+import { userBuild } from '../../src/testUtils';
 import { AuthStorageEnum } from '../../src/types/AuthStorageEnum';
 
 context('Unauthenticated', () => {
@@ -44,7 +44,9 @@ context('Unauthenticated', () => {
 });
 
 context('Authenticated', () => {
-  const user = db.user.create({ name: 'Jane Doe', email: 'jane@doe.me' });
+  const user = userBuild({
+    overrides: { name: 'Jane Doe', email: 'jane@doe.me' },
+  });
 
   beforeEach(() => {
     cy.visit('/');

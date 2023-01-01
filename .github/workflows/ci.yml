@@ -49,7 +49,7 @@ jobs:
       - name: Checkout 🛎
         uses: actions/checkout@v3
       - name: Run Cypress tests 🌲
-        uses: cypress-io/github-action@v2
+        uses: cypress-io/github-action@v5
         with:
           start: yarn start
           wait-on: http://localhost:3000

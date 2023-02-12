@@ -22,7 +22,7 @@
     "cypress": "^9.7.0",
     "eslint-plugin-cypress": "^2.12.1",
     "framer-motion": "^6.3.3",
-    "msw": "^0.41.0",
+    "msw": "^1.0.1",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
     "react-hook-form": "7.31.2",
